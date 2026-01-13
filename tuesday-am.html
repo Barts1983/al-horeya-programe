@@ -1,33 +1,110 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Al Horeya – Tuesday AM</title>
+<title>Al Horeya – Tuesday Morning Programme</title>
+
+<style>
+body {
+    font-family: Arial, sans-serif;
+    background: white;
+    color: #092a5e;
+    margin: 0;
+}
+
+header {
+    padding: 30px;
+    border-bottom: 4px solid #092a5e;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 42px;
+}
+
+header h2 {
+    margin: 5px 0 0;
+    font-weight: normal;
+    font-size: 30px;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 30px;
+    border: 3px solid #092a5e;
+}
+
+th, td {
+    padding: 18px;
+    font-size: 28px;
+    border-bottom: 2px solid #092a5e;
+}
+
+th {
+    text-align: left;
+    font-size: 26px;
+}
+
+tr:last-child td {
+    border-bottom: none;
+}
+
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    border-top: 3px solid #092a5e;
+    padding: 12px;
+    font-size: 20px;
+    text-align: center;
+    background: white;
+}
+</style>
 </head>
 
-<body style="font-family: Arial; background:#0b2a4a; color:white; padding:40px;">
+<body>
 
-<h1>Al Horeya</h1>
-<h2>Tuesday – Morning Programme</h2>
+<header>
+    <h1>Al Horeya</h1>
+    <h2>Tuesday – Morning Programme</h2>
+</header>
 
-<ul id="list"></ul>
+<table id="programme">
+    <thead>
+        <tr>
+            <th>Time</th>
+            <th>Event</th>
+            <th>Location</th>
+        </tr>
+    </thead>
+    <tbody></tbody>
+</table>
+
+<footer>
+    Programme subject to change
+</footer>
 
 <script>
 const SHEET_ID = "1Y8cKLUMw_daENxzENIrJ7jPiLMbVUSf69u6P4u5e_A4";
-const TAB = "Tuesday AM";
+const TAB_NAME = "Tuesday AM";
 
-fetch(`https://opensheet.elk.sh/${SHEET_ID}/${TAB}`)
-  .then(r => r.json())
+fetch(`https://opensheet.elk.sh/${SHEET_ID}/${TAB_NAME}`)
+  .then(res => res.json())
   .then(data => {
-    const ul = document.getElementById("list");
+    const tbody = document.querySelector("#programme tbody");
+    tbody.innerHTML = "";
+
     data.forEach(row => {
-      const li = document.createElement("li");
-      li.innerText = row.Time + " – " + row.Event + " (" + row.Location + ")";
-      ul.appendChild(li);
+      const tr = document.createElement("tr");
+
+      tr.innerHTML = `
+        <td>${row.Time}</td>
+        <td>${row.Event}<br><small>${row.Notes || ""}</small></td>
+        <td>${row.Location}</td>
+      `;
+      tbody.appendChild(tr);
     });
-  })
-  .catch(err => {
-    document.body.innerHTML += "<pre>" + err + "</pre>";
   });
 </script>
 
