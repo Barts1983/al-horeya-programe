@@ -1,114 +1,33 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
 <meta charset="UTF-8">
-<title>Al Horeya – Tuesday Morning Programme</title>
-
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background: #0b2a4a;
-    color: white;
-    margin: 0;
-}
-
-header {
-    padding: 30px;
-    background: #003a8f;
-}
-
-header h1 {
-    margin: 0;
-    font-size: 42px;
-}
-
-header h2 {
-    margin: 5px 0 0;
-    font-weight: normal;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 20px;
-}
-
-th, td {
-    padding: 18px;
-    font-size: 28px;
-}
-
-th {
-    background: #002b6b;
-    text-align: left;
-}
-
-tr:nth-child(even) {
-    background: rgba(255,255,255,0.05);
-}
-
-.category-Info { border-left: 8px solid #ffd100; }
-.category-Talk { border-left: 8px solid #00b3ff; }
-.category-Wellness { border-left: 8px solid #6cc070; }
-.category-Social { border-left: 8px solid #ff7a7a; }
-
-footer {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
-    background: #002b6b;
-    padding: 12px;
-    font-size: 20px;
-    text-align: center;
-}
-</style>
+<title>Al Horeya – Tuesday AM</title>
 </head>
 
-<body>
+<body style="font-family: Arial; background:#0b2a4a; color:white; padding:40px;">
 
-<header>
-    <h1>Al Horeya</h1>
-    <h2>Tuesday – Morning Programme</h2>
-</header>
+<h1>Al Horeya</h1>
+<h2>Tuesday – Morning Programme</h2>
 
-<table id="programme">
-    <thead>
-        <tr>
-            <th>Time</th>
-            <th>Event</th>
-            <th>Location</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
-
-<footer>
-    Programme subject to change
-</footer>
+<ul id="list"></ul>
 
 <script>
 const SHEET_ID = "1Y8cKLUMw_daENxzENIrJ7jPiLMbVUSf69u6P4u5e_A4";
-const TAB_NAME = "Tuesday AM";
+const TAB = "Tuesday AM";
 
-const url = `https://opensheet.elk.sh/${SHEET_ID}/${TAB_NAME}`;
-
-fetch(url)
-  .then(res => res.json())
+fetch(`https://opensheet.elk.sh/${SHEET_ID}/${TAB}`)
+  .then(r => r.json())
   .then(data => {
-    const tbody = document.querySelector("#programme tbody");
-    tbody.innerHTML = "";
-
+    const ul = document.getElementById("list");
     data.forEach(row => {
-      const tr = document.createElement("tr");
-      tr.className = "category-" + (row.Category || "Info");
-
-      tr.innerHTML = `
-        <td>${row.Time}</td>
-        <td>${row.Event}<br><small>${row.Notes || ""}</small></td>
-        <td>${row.Location}</td>
-      `;
-      tbody.appendChild(tr);
+      const li = document.createElement("li");
+      li.innerText = row.Time + " – " + row.Event + " (" + row.Location + ")";
+      ul.appendChild(li);
     });
+  })
+  .catch(err => {
+    document.body.innerHTML += "<pre>" + err + "</pre>";
   });
 </script>
 
