@@ -10,10 +10,12 @@ body {
     background: white;
     color: #092a5e;
     margin: 0;
+    padding: 0;
 }
 
+/* Header */
 header {
-    padding: 30px;
+    padding: 20px 30px;
     border-bottom: 4px solid #092a5e;
 }
 
@@ -25,31 +27,45 @@ header h1 {
 header h2 {
     margin: 5px 0 0;
     font-weight: normal;
-    font-size: 30px;
-}
-
-table {
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 30px;
-    border: 3px solid #092a5e;
-}
-
-th, td {
-    padding: 18px;
     font-size: 28px;
+}
+
+/* Table container */
+.table-container {
+    width: 100%;
+    max-height: calc(100vh - 140px); /* screen minus header/footer */
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+}
+
+/* Table */
+table {
+    width: 95%;
+    table-layout: fixed;
+    border-collapse: collapse;
+    border: 3px solid #092a5e;
+    font-size: 22px;
+}
+
+/* Table cells */
+th, td {
+    padding: 12px;
     border-bottom: 2px solid #092a5e;
-}
-
-th {
     text-align: left;
-    font-size: 26px;
 }
 
-tr:last-child td {
-    border-bottom: none;
+/* Header row */
+th {
+    font-size: 24px;
 }
 
+/* Alternate row shading */
+tr:nth-child(even) {
+    background: rgba(9, 42, 94, 0.05);
+}
+
+/* Footer */
 footer {
     position: fixed;
     bottom: 0;
@@ -59,6 +75,13 @@ footer {
     font-size: 20px;
     text-align: center;
     background: white;
+}
+
+/* Auto-shrink text to fit height if needed */
+@media screen and (max-height: 1080px) {
+    table {
+        font-size: 20px;
+    }
 }
 </style>
 </head>
@@ -70,16 +93,18 @@ footer {
     <h2>Tuesday – Morning Programme</h2>
 </header>
 
-<table id="programme">
-    <thead>
-        <tr>
-            <th>Time</th>
-            <th>Event</th>
-            <th>Location</th>
-        </tr>
-    </thead>
-    <tbody></tbody>
-</table>
+<div class="table-container">
+    <table id="programme">
+        <thead>
+            <tr>
+                <th>Time</th>
+                <th>Event</th>
+                <th>Location</th>
+            </tr>
+        </thead>
+        <tbody></tbody>
+    </table>
+</div>
 
 <footer>
     Programme subject to change
@@ -95,9 +120,14 @@ fetch(`https://opensheet.elk.sh/${SHEET_ID}/${TAB_NAME}`)
     const tbody = document.querySelector("#programme tbody");
     tbody.innerHTML = "";
 
+    // calculate font size dynamically if table is too tall
+    const rowCount = data.length;
+    const baseFont = 22; // px
+    const adjustedFont = Math.max(16, Math.floor(baseFont - (rowCount - 5))); // shrink for more rows
+    document.querySelector("table").style.fontSize = adjustedFont + "px";
+
     data.forEach(row => {
       const tr = document.createElement("tr");
-
       tr.innerHTML = `
         <td>${row.Time}</td>
         <td>${row.Event}<br><small>${row.Notes || ""}</small></td>
