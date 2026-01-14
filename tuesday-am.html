@@ -13,15 +13,30 @@ body {
     padding: 0;
 }
 
-header {
-    padding: 16px 30px;
-    border-bottom: 4px solid #092a5e;
+/* Top Header */
+.top-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 30px;
+    background: #092a5e;
+    color: white;
 }
 
-header h2 {
+/* Header title */
+.top-header h2 {
     margin: 0;
     font-size: 34px;
+    font-weight: 600;
 }
+
+/* Logo */
+.header-right img {
+    height: 50px;
+    max-width: 180px;
+    object-fit: contain;
+}
+
 
 
 
@@ -88,8 +103,13 @@ footer {
 
 <body>
 
-<header>
+<header class="top-header">
+    <div class="header-left">
         <h2>Tuesday – Morning Programme</h2>
+    </div>
+    <div class="header-right">
+        <img src="logo.png" alt="Company Logo">
+    </div>
 </header>
 
 <div class="table-container">
