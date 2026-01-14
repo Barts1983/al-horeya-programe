@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<title>Al Horeya – Tuesday Morning Programme</title>
+<title>Al Horeya - Tuesday Morning Programme</title>
 
 <style>
 body {
@@ -112,7 +112,7 @@ footer {
 
 <script>
 const SHEET_ID = "1Y8cKLUMw_daENxzENIrJ7jPiLMbVUSf69u6P4u5e_A4";
-const TAB_NAME = "Tuesday AM";
+const TAB_NAME = encodeURIComponent("Tuesday AM");
 
 fetch(`https://opensheet.elk.sh/${SHEET_ID}/${TAB_NAME}`)
   .then(res => res.json())
@@ -120,23 +120,26 @@ fetch(`https://opensheet.elk.sh/${SHEET_ID}/${TAB_NAME}`)
     const tbody = document.querySelector("#programme tbody");
     tbody.innerHTML = "";
 
-    // calculate font size dynamically if table is too tall
     const rowCount = data.length;
-    const baseFont = 22; // px
-    const adjustedFont = Math.max(16, Math.floor(baseFont - (rowCount - 5))); // shrink for more rows
+    const baseFont = 22;
+    const adjustedFont = Math.max(16, Math.floor(baseFont - (rowCount - 5)));
     document.querySelector("table").style.fontSize = adjustedFont + "px";
 
     data.forEach(row => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${row.Time}</td>
-        <td>${row.Event}<br><small>${row.Notes || ""}</small></td>
-        <td>${row.Location}</td>
+        <td>${row.Time || ""}</td>
+        <td>${row.Event || ""}<br><small>${row.Notes || ""}</small></td>
+        <td>${row.Location || ""}</td>
       `;
       tbody.appendChild(tr);
     });
+  })
+  .catch(err => {
+    console.error("Programme load failed", err);
   });
 </script>
+
 
 </body>
 </html>
