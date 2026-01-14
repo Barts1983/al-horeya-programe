@@ -28,10 +28,11 @@ header h2 {
 /* Table container */
 .table-container {
     width: 100%;
-    max-height: calc(100vh - 140px); /* screen minus header/footer */
+    max-height: calc(100vh - 160px); /* screen minus header/footer */
     overflow: hidden;
     display: flex;
     justify-content: center;
+    padding: 30px 0;
 }
 
 /* Table */
@@ -41,6 +42,10 @@ table {
     border-collapse: collapse;
     border: 3px solid #092a5e;
     font-size: 22px;
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
 }
 
 /* Table cells */
