@@ -70,9 +70,13 @@ th, td {
     text-align: left;
 }
 
-/* Header row */
-th {
-    font-size: 24px;
+/* Table header row */
+thead tr {
+    background: rgba(241, 250, 254, 1);
+}
+
+thead th {
+    border-bottom: 3px solid #092a5e;
 }
 
 /* Alternate row shading */
@@ -80,16 +84,16 @@ tr:nth-child(even) {
     background: rgba(241, 250, 254, 1);
 }
 
-/* Footer */
 footer {
     position: fixed;
     bottom: 0;
     width: 100%;
-    border-top: 3px solid #092a5e;
-    padding: 12px;
+    background: #092a5e;
+    color: white;
+    border-top: none;
+    padding: 14px;
     font-size: 20px;
     text-align: center;
-    background: white;
 }
 
 /* Auto-shrink text to fit height if needed */
@@ -126,7 +130,7 @@ footer {
 </div>
 
 <footer>
-    Programme subject to change
+    *Please note that pick up times for shore excursions are approximate - please see your Cruise Manager Jo for confirmed time
 </footer>
 
 <script>
