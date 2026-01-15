@@ -54,16 +54,16 @@ body {
     object-fit: contain;
 }
 
-/* Table container */
 .table-container {
     width: 100%;
-    max-height: calc(100vh - 160px); /* screen minus header/footer */
-    overflow: auto;
+    height: calc(100vh - 200px); /* header + footer + breathing space */
     display: flex;
     justify-content: center;
-    padding: 20px 0 10px;
-    box-sizing: border-box;
+    align-items: flex-start;
+    padding: 20px 0;
+    overflow: hidden;
 }
+
 
 table {
     width: 95%;
