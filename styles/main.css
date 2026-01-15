@@ -127,4 +127,49 @@ footer {
         font-size: 20px;
     }
 }
+
+/* Home page tiles */
+
+.tiles-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    gap: 30px;
+    padding: 40px;
+}
+
+.day-tile {
+    background: #092a5e;
+    color: white;
+    text-decoration: none;
+    font-size: 36px;
+    font-weight: 600;
+    border-radius: 18px;
+    padding: 40px 20px;
+    text-align: center;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.day-tile span {
+    display: block;
+    font-size: 24px;
+    font-weight: normal;
+    margin-top: 10px;
+    opacity: 0.9;
+}
+
+.day-tile:hover {
+    transform: scale(1.04);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.25);
+}
+
+/* Footer reuse */
+.main-footer {
+    background: #092a5e;
+    color: white;
+    text-align: center;
+    padding: 14px;
+    font-size: 18px;
+}
+
 </style>
