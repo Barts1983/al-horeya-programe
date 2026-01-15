@@ -152,10 +152,11 @@ footer {
 
 .tiles-container {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+    grid-template-columns: repeat(4, 1fr);
     gap: 30px;
     padding: 40px;
 }
+
 
 .day-tile {
     background: #092a5e;
@@ -168,6 +169,11 @@ footer {
     text-align: center;
     box-shadow: 0 10px 24px rgba(0,0,0,0.18);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
+    /* NEW */
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
 }
 
 .day-tile span {
