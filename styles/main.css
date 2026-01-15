@@ -128,7 +128,27 @@ footer {
     }
 }
 
-/* Home page tiles */
+/* ===== HOME PAGE HEADER ===== */
+
+.main-header {
+    background: #092a5e;
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main-header h2 {
+    margin: 0;
+    font-size: 34px;
+}
+
+.main-header img {
+    height: 60px;
+}
+
+/* ===== HOME PAGE TILES ===== */
 
 .tiles-container {
     display: grid;
@@ -141,7 +161,7 @@ footer {
     background: #092a5e;
     color: white;
     text-decoration: none;
-    font-size: 36px;
+    font-size: 34px;
     font-weight: 600;
     border-radius: 18px;
     padding: 40px 20px;
@@ -152,9 +172,9 @@ footer {
 
 .day-tile span {
     display: block;
-    font-size: 24px;
+    font-size: 22px;
     font-weight: normal;
-    margin-top: 10px;
+    margin-top: 8px;
     opacity: 0.9;
 }
 
@@ -163,7 +183,8 @@ footer {
     box-shadow: 0 14px 30px rgba(0,0,0,0.25);
 }
 
-/* Footer reuse */
+/* ===== HOME PAGE FOOTER ===== */
+
 .main-footer {
     background: #092a5e;
     color: white;
@@ -171,5 +192,6 @@ footer {
     padding: 14px;
     font-size: 18px;
 }
+
 
 </style>
