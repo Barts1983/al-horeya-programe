@@ -45,11 +45,7 @@ fetch(`https://opensheet.elk.sh/${SHEET_ID}/${TAB_NAME}`)
     const tbody = document.querySelector("#programme tbody");
     tbody.innerHTML = "";
 
-    const rowCount = data.length;
-    const baseFont = 22;
-    const adjustedFont = Math.max(16, Math.floor(baseFont - (rowCount - 5)));
-    document.querySelector("table").style.fontSize = adjustedFont + "px";
-
+    // 1️⃣ Render all rows
     data.forEach(row => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
@@ -59,11 +55,32 @@ fetch(`https://opensheet.elk.sh/${SHEET_ID}/${TAB_NAME}`)
       `;
       tbody.appendChild(tr);
     });
+
+    // 2️⃣ Shrink table to fit container (no scrolling)
+    const table = document.querySelector("table");
+    const container = document.querySelector(".table-container");
+
+    let fontSize = 22;   // starting font size
+    let padding = 12;    // starting cell padding
+
+    table.style.fontSize = fontSize + "px";
+    document.querySelectorAll("th, td").forEach(c => c.style.padding = padding + "px");
+
+    // Iteratively shrink until table fits container
+    while (table.offsetHeight > container.clientHeight && fontSize > 14) {
+      fontSize -= 1;
+      padding -= 1;
+
+      table.style.fontSize = fontSize + "px";
+      document.querySelectorAll("th, td").forEach(c => c.style.padding = padding + "px");
+    }
+
   })
   .catch(err => {
     console.error("Programme load failed", err);
   });
 </script>
+
 
 
 </body>
