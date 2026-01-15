@@ -58,10 +58,11 @@ body {
 .table-container {
     width: 100%;
     max-height: calc(100vh - 160px); /* screen minus header/footer */
-    overflow: hidden;
+    overflow: auto;
     display: flex;
     justify-content: center;
-    padding: 30px 0;
+    padding: 20px 0 10px;
+    box-sizing: border-box;
 }
 
 table {
