@@ -1,1 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>All Onboard</title>
 
+  <!-- Your existing brand CSS (Ambit font, colours, etc.) -->
+  <link rel="stylesheet" href="styles/main.css" />
+
+  <!-- Tiny, page-specific helpers to avoid touching your global CSS -->
+  <style>
+    /* Full-bleed background image like the PowerPoint */
+    .bg-full {
+      position: fixed;
+      inset: 0;
+      background: #000 url("img/all-aboard-bg.jpg") center/cover no-repeat;
+      z-index: -2;
+    }
+    /* Slight overlay for legibility on light photos */
+    .bg-full::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(0,0,0,.25), rgba(0,0,0,.25));
+    }
+
+    /* Center the card on the screen */
+    .page-wrap {
+      min-height: 100vh;
+      display: grid;
+      place-items: center;
+      padding: 24px;
+    }
+
+    /* Sky blue card: text uses your brand deep blue from body color */
+    .sky-card {
+      width: min(1100px, 92vw);
+      border-radius: 18px;
+      background: #70CBF4;  /* TUI sky-ish blue; keep here so we don't pollute main.css */
+      color: #092a5e;
+      box-shadow: 0 16px 40px rgba(0,0,0,.25);
+      padding: clamp(16px, 4vw, 48px);
+      display: grid;
+      gap: clamp(8px, 2vw, 18px);
+      font-family: 'Ambit', Arial, sans-serif; /* ensure Ambit even if page is embedded */
+    }
+
+    /* Typography hierarchy using Ambit weights defined in your CSS */
+    .title {
+      text-transform: uppercase;
+      letter-spacing: .06em;
+      font-weight: 700;                      /* Ambit-Bold mapping (600/700) */
+      font-size: clamp(18px, 2.6vw, 28px);
+    }
+    .daydate {
+      font-size: clamp(18px, 2.4vw, 30px);
+      font-weight: 600;
+    }
+    .port {
+      font-weight: 700;
+      text-transform: uppercase;
+      line-height: 1.05;
+      font-size: clamp(28px, 6vw, 84px);
+      word-break: break-word;                /* long names won’t overflow */
+    }
+    .country {
+      text-transform: uppercase;
+      font-weight: 600;
+      font-size: clamp(16px, 3vw, 36px);
+      opacity: .95;
+    }
+    .bob {
+      display: flex;
+      align-items: baseline;
+      gap: clamp(10px, 2vw, 24px);
+      margin-top: clamp(6px, 1.2vw, 12px);
+    }
+    .bob .label {
+      text-transform: uppercase;
+      font-weight: 700;
+      letter-spacing: .06em;
+      font-size: clamp(14px, 2vw, 20px);
+    }
+    .bob .time {
+      font-weight: 700;
+      font-size: clamp(24px, 5vw, 56px);
+    }
+
+    /* Optional notes under the card (sits on top of the background) */
+    .notes {
+      margin-top: 12px;
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0,0,0,.5);
+      font-size: clamp(12px, 1.6vw, 16px);
+      text-align: center;
+      font-family: 'Ambit', Arial, sans-serif;
+    }
+
+    /* Mobile nicety */
+    @media (max-width: 560px) {
+      .bob { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background image (fixed, always the same) -->
+  <div class="bg-full" aria-hidden="true"></div>
+
+  <!-- Centered card content -->
+  <div class="page-wrap">
+    <section class="sky-card" id="card">
+      <div class="title" id="title">ALL ONBOARD</div>
+      <div class="daydate" id="dayDate">Day Date</div>
+      <div class="port" id="port">PORT</div>
+      <div class="country" id="country">COUNTRY</div>
+
+      <div class="bob">
+        <div class="label">Back on board</div>
+        <div class="time" id="bobTime">—</div>
+      </div>
+    </section>
+  </div>
+
+  <!-- Optional line for extra information -->
+  <div class="notes" id="notes"></div>
+
+  <script>
+    /*
+      USAGE:
+      - Place background image at: /img/all-aboard-bg.jpg
+      - Publish page at: /all-aboard.html
+
+      OPEN WITH:
+      /all-aboard.html?sheet=<YOUR_SHEET_ID>&tab=Live
+
+      SHEET:
+      - Single tab (e.g., "Live") with EXACT headers on row 1:
+        Day | DateText | Port | Country | BackOnBoard | Notes
+      - Row 2 contains the values; CDs edit this one row daily.
+    */
+
+    const params = new URLSearchParams(location.search);
+
+    // REQUIRED: your dedicated Google Sheet ID
+    const SHEET_ID = params.get("10DCX_3LZlqSITNfTVNuvxvRBu_m0s5aPiYVQy_LkSiA");
+
+    // OPTIONAL: defaults to "Live" (the single tab CDs edit)
+    const TAB_NAME = params.get("tab") || "Live";
+
+    // Fixed title—change here if you ever want a different label
+    const PAGE_TITLE = "ALL ONBOARD";
+    document.getElementById("title").textContent = PAGE_TITLE;
+
+    if (!SHEET_ID) {
+      document.getElementById("card").innerHTML =
+        "<div style='font:16px/1.4 Ambit, Arial, sans-serif'>Missing <b>?sheet=YOUR_SHEET_ID</b> in the URL.</div>";
+    } else {
+      const url = `https://opensheet.elk.sh/${encodeURIComponent(SHEET_ID)}/${encodeURIComponent(TAB_NAME)}`;
+      fetch(url)
+        .then(r => r.json())
+        .then(rows => {
+          const row = rows && rows[0] ? rows[0] : {};
+
+          const Day         = (row.Day || "").trim();
+          const DateText    = (row.DateText || "").trim();
+          const Port        = (row.Port || "").trim();
+          const Country     = (row.Country || "").trim();
+          const BackOnBoard = (row.BackOnBoard || "").trim();
+          const Notes       = (row.Notes || "").trim();
+
+          // Populate the UI
+          document.getElementById("dayDate").textContent = [Day, DateText].filter(Boolean).join(" ");
+          document.getElementById("port").textContent    = Port;
+          document.getElementById("country").textContent = Country;
+          document.getElementById("bobTime").textContent = BackOnBoard || "—";
+          document.getElementById("notes").textContent   = Notes;
+
+          // Make long port names fit if the card grows too tall
+          autoFitPort();
+        })
+        .catch(err => {
+          console.error("Load failed", err);
+          document.getElementById("card").innerHTML =
+            "<div style='font:16px/1.4 Ambit, Arial, sans-serif'>Could not load data. Check your Sheet ID / Tab name.</div>";
+        });
+    }
+
+    function autoFitPort(){
+      const card = document.getElementById("card");
+      const port = document.getElementById("port");
+      let size = parseFloat(getComputedStyle(port).fontSize);
+      let tries = 0;
+      while (card.scrollHeight > card.clientHeight && size > 20 && tries < 25){
+        size -= 2;
+        port.style.fontSize = size + "px";
+        tries++;
+      }
+    }
+  </script>
+</body>
+</html>
