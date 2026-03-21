@@ -104,6 +104,22 @@
     @media (max-width: 560px) {
       .bob { flex-direction: column; align-items: flex-start; }
     }
+
+    
+    /* ===== SMALL & RIGHT-ALIGNED LOGO FOR ALL ONBOARD PAGE ===== */
+    .onboard-logo-box {
+      display: flex;
+      justify-content: flex-end; /* moves logo to the right side */
+      margin-bottom: 10px;
+    }
+    
+    .onboard-logo {
+      width: 130px;      /* adjust size here */
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
   </style>
 </head>
 <body>
@@ -114,6 +130,11 @@
   <div class="page-wrap">
     <section class="sky-card" id="card">
       <h1 class="title" id="title">ALL ONBOARD</h1>
+      
+    <div class="onboard-logo-box">
+        <img src="logo.png" alt="Company Logo" class="onboard-logo">
+    </div>
+
       <p class="daydate" id="dayDate">Day Date</p>
 
       <!-- New single-line location (Port, Country) -->
