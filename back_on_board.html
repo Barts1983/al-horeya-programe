@@ -5,10 +5,10 @@
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>All Onboard</title>
 
-  <!-- Your existing brand CSS (Ambit font, colours, etc.) -->
+  <!-- Your brand stylesheet (Ambit fonts, colours, etc.) -->
   <link rel="stylesheet" href="styles/main.css" />
 
-  <!-- Tiny, page-specific helpers to avoid touching your global CSS -->
+  <!-- Page-specific helpers kept minimal to avoid touching global CSS -->
   <style>
     /* Full-bleed background image like the PowerPoint */
     .bg-full {
@@ -33,20 +33,20 @@
       padding: 24px;
     }
 
-    /* Sky blue card: text uses your brand deep blue from body color */
+    /* Sky-blue card: text uses brand deep blue from your CSS */
     .sky-card {
       width: min(1100px, 92vw);
       border-radius: 18px;
-      background: #70CBF4;  /* TUI sky-ish blue; keep here so we don't pollute main.css */
-      color: #092a5e;
+      background: #70CBF4;       /* TUI sky-ish blue */
+      color: #092a5e;            /* your brand deep blue */
       box-shadow: 0 16px 40px rgba(0,0,0,.25);
       padding: clamp(16px, 4vw, 48px);
       display: grid;
       gap: clamp(8px, 2vw, 18px);
-      font-family: 'Ambit', Arial, sans-serif; /* ensure Ambit even if page is embedded */
+      font-family: 'Ambit', Arial, sans-serif;
     }
 
-    /* Typography hierarchy using Ambit weights defined in your CSS */
+    /* Typography hierarchy using Ambit weights you defined */
     .title {
       text-transform: uppercase;
       letter-spacing: .06em;
@@ -104,7 +104,12 @@
   </style>
 </head>
 <body>
-  <!-- Background image (fixed, always the same) -->
+  
+<div style="background: red; color: white; padding: 20px; font-size: 24px;">
+    THIS IS THE NEW FILE
+</div>
+
+  <!-- Fixed background image (always the same) -->
   <div class="bg-full" aria-hidden="true"></div>
 
   <!-- Centered card content -->
@@ -122,70 +127,59 @@
     </section>
   </div>
 
-  <!-- Optional line for extra information -->
+  <!-- Optional extra line below the card -->
   <div class="notes" id="notes"></div>
 
   <script>
     /*
-      USAGE:
-      - Place background image at: /img/all-aboard-bg.jpg
-      - Publish page at: /all-aboard.html
+      CONFIG
+      - Fixed Sheet ID and Tab so the page works at /back-on-board.html without parameters.
+      - Cruise Directors edit ONE row in the tab below.
 
-      OPEN WITH:
-      /all-aboard.html?sheet=<10DCX_3LZlqSITNfTVNuvxvRBu_m0s5aPiYVQy_LkSiA>&tab=Live
-
-      SHEET:
-      - Single tab (e.g., "Live") with EXACT headers on row 1:
-        Day | DateText | Port | Country | BackOnBoard | Notes
-      - Row 2 contains the values; CDs edit this one row daily.
+      SHEET STRUCTURE (row 1 headers, row 2 values):
+      Day | DateText | Port | Country | BackOnBoard | Notes
     */
 
-    const params = new URLSearchParams(location.search);
+    // === Hard-coded Google Sheet details ===
+    const SHEET_ID = "10DCX_3LZlqSITNfTVNuvxvRBu_m0s5aPiYVQy_LkSiA"; // your sheet id
+    const TAB_NAME = "Live";  // change here if your tab is named differently
 
-    // REQUIRED: your dedicated Google Sheet ID
-    const SHEET_ID = params.get("10DCX_3LZlqSITNfTVNuvxvRBu_m0s5aPiYVQy_LkSiA");
-
-    // OPTIONAL: defaults to "Live" (the single tab CDs edit)
-    const TAB_NAME = params.get("tab") || "Live";
-
-    // Fixed title—change here if you ever want a different label
+    // Static title text (change if you ever rebrand the card heading)
     const PAGE_TITLE = "ALL ONBOARD";
     document.getElementById("title").textContent = PAGE_TITLE;
 
-    if (!SHEET_ID) {
-      document.getElementById("card").innerHTML =
-        "<div style='font:16px/1.4 Ambit, Arial, sans-serif'>Missing <b>?sheet=YOUR_SHEET_ID</b> in the URL.</div>";
-    } else {
-      const url = `https://opensheet.elk.sh/${encodeURIComponent(SHEET_ID)}/${encodeURIComponent(TAB_NAME)}`;
-      fetch(url)
-        .then(r => r.json())
-        .then(rows => {
-          const row = rows && rows[0] ? rows[0] : {};
+    // Build OpenSheet URL and fetch data
+    const url = `https://opensheet.elk.sh/${encodeURIComponent(SHEET_ID)}/${encodeURIComponent(TAB_NAME)}`;
 
-          const Day         = (row.Day || "").trim();
-          const DateText    = (row.DateText || "").trim();
-          const Port        = (row.Port || "").trim();
-          const Country     = (row.Country || "").trim();
-          const BackOnBoard = (row.BackOnBoard || "").trim();
-          const Notes       = (row.Notes || "").trim();
+    fetch(url)
+      .then(r => r.json())
+      .then(rows => {
+        const row = rows && rows[0] ? rows[0] : {};
 
-          // Populate the UI
-          document.getElementById("dayDate").textContent = [Day, DateText].filter(Boolean).join(" ");
-          document.getElementById("port").textContent    = Port;
-          document.getElementById("country").textContent = Country;
-          document.getElementById("bobTime").textContent = BackOnBoard || "—";
-          document.getElementById("notes").textContent   = Notes;
+        const Day         = (row.Day || "").trim();
+        const DateText    = (row.DateText || "").trim();
+        const Port        = (row.Port || "").trim();
+        const Country     = (row.Country || "").trim();
+        const BackOnBoard = (row.BackOnBoard || "").trim();
+        const Notes       = (row.Notes || "").trim();
 
-          // Make long port names fit if the card grows too tall
-          autoFitPort();
-        })
-        .catch(err => {
-          console.error("Load failed", err);
-          document.getElementById("card").innerHTML =
-            "<div style='font:16px/1.4 Ambit, Arial, sans-serif'>Could not load data. Check your Sheet ID / Tab name.</div>";
-        });
-    }
+        // Populate the UI
+        document.getElementById("dayDate").textContent = [Day, DateText].filter(Boolean).join(" ");
+        document.getElementById("port").textContent    = Port;
+        document.getElementById("country").textContent = Country;
+        document.getElementById("bobTime").textContent = BackOnBoard || "—";
+        document.getElementById("notes").textContent   = Notes;
 
+        // Make long port names fit if the card grows too tall
+        autoFitPort();
+      })
+      .catch(err => {
+        console.error("Load failed", err);
+        document.getElementById("card").innerHTML =
+          "<div style='font:16px/1.4 Ambit, Arial, sans-serif'>Could not load data. Please check the Sheet ID, tab name, or network connection.</div>";
+      });
+
+    // Gradually reduce the port font-size if the card overflows vertically (very long port names)
     function autoFitPort(){
       const card = document.getElementById("card");
       const port = document.getElementById("port");
@@ -199,4 +193,5 @@
     }
   </script>
 </body>
+
 </html>
