@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Verdastro Opening Times</title>
+
+  <!-- Your brand stylesheet (Ambit font, colours, etc.) -->
+  <link rel="stylesheet" href="styles/main.css" />
+
+  <style>
+    /* Full-bleed background image like the PowerPoint */
+    .bg-full {
+      position: fixed;
+      inset: 0;
+      background: #000 url("img/all-aboard-bg.jpg") center/cover no-repeat;
+      z-index: -2;
+    }
+    .bg-full::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(0deg, rgba(0,0,0,.25), rgba(0,0,0,.25));
+    }
+
+    /* Raise the card higher so more of the ship is visible */
+    .page-wrap {
+      min-height: 100vh;
+      display: grid;
+      justify-items: center;
+      align-items: start;
+      padding: clamp(16px, 3vw, 32px) clamp(16px, 4vw, 40px);
+      padding-top: clamp(20px, 6vh, 60px);
+      box-sizing: border-box;
+    }
+
+    /* Transparent card */
+    .sky-card {
+      width: min(600px, 90vw);
+      border-radius: 18px;
+      background: rgb(112, 203, 244);
+      color: #092a5e;
+      box-shadow: 0 10px 28px rgba(0,0,0,.25);
+      padding: clamp(20px, 4vw, 40px);
+      display: grid;
+      gap: clamp(10px, 2vw, 20px);
+      font-family: 'Ambit', Arial, sans-serif;
+      backdrop-filter: blur(4px);
+    }
+
+    .title {
+      font-size: clamp(34px, 5.5vw, 64px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: .05em;
+      margin: 0 0 6px 0;
+      line-height: 1.05;
+    }
+
+    /* Meal rows */
+    .meal-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: clamp(10px, 2vw, 24px);
+      border-top: 1px solid rgba(9,42,94,0.15);
+      padding-top: clamp(10px, 1.6vw, 14px);
+    }
+    .meal-row:first-of-type {
+      border-top: none;
+      padding-top: 0;
+    }
+    .meal-label,
+    .meal-time {
+      font-size: clamp(18px, 3vw, 28px);
+      font-weight: 700;
+      margin: 0;
+    }
+    .meal-label {
+      text-transform: uppercase;
+      letter-spacing: .06em;
+    }
+
+    /* Optional notes under the card */
+    .notes {
+      margin-top: 12px;
+      color: #ffffff;
+      text-shadow: 0 1px 2px rgba(0,0,0,.5);
+      font-size: clamp(12px, 1.6vw, 16px);
+      text-align: center;
+      font-family: 'Ambit', Arial, sans-serif;
+      padding: 0 16px;
+    }
+
+    /* Logo (right aligned) */
+    .onboard-logo-box {
+      display: flex;
+      justify-content: flex-end;
+      margin-top: 20px;
+      margin-bottom: 10px;
+      padding: 0 24px;
+    }
+    .onboard-logo {
+      width: 150px;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    @media (max-width: 560px) {
+      .meal-row { flex-direction: column; align-items: flex-start; }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="bg-full" aria-hidden="true"></div>
+
+  <div class="onboard-logo-box">
+    <img src="logo.png" alt="Company Logo" class="onboard-logo">
+  </div>
+
+  <div class="page-wrap">
+    <section class="sky-card" id="card">
+      <h1 class="title" id="title">VERDASTRO OPENING TIMES</h1>
+
+      <div class="meal-row">
+        <div class="meal-label">Breakfast</div>
+        <div class="meal-time" id="breakfastTime">—</div>
+      </div>
+
+      <div class="meal-row">
+        <div class="meal-label">Lunch</div>
+        <div class="meal-time" id="lunchTime">—</div>
+      </div>
+
+      <div class="meal-row">
+        <div class="meal-label">Dinner</div>
+        <div class="meal-time" id="dinnerTime">—</div>
+      </div>
+    </section>
+  </div>
+
+  <div class="notes" id="notes"></div>
+
+  <script>
+    /*
+      Sheet tab: restaurant
+      Row 1 headers, row 2 values:
+      Breakfast | Lunch | Dinner | Notes
+    */
+    const SHEET_ID = "10DCX_3LZlqSITNfTVNuvxvRBu_m0s5aPiYVQy_LkSiA";
+    const TAB_NAME = "restaurant";
+
+    const PAGE_TITLE = "VERDASTRO OPENING TIMES";
+    document.getElementById("title").textContent = PAGE_TITLE;
+
+    const url = `https://opensheet.elk.sh/${encodeURIComponent(SHEET_ID)}/${encodeURIComponent(TAB_NAME)}`;
+
+    fetch(url)
+      .then(r => r.json())
+      .then(rows => {
+        const row = rows && rows[0] ? rows[0] : {};
+
+        const Breakfast = (row.Breakfast || row.BreakfastTime || "").trim();
+        const Lunch     = (row.Lunch     || row.LunchTime     || "").trim();
+        const Dinner    = (row.Dinner    || row.DinnerTime    || "").trim();
+        const Notes     = (row.Notes || "").trim();
+
+        document.getElementById("breakfastTime").textContent = Breakfast || "—";
+        document.getElementById("lunchTime").textContent     = Lunch || "—";
+        document.getElementById("dinnerTime").textContent    = Dinner || "—";
+        document.getElementById("notes").textContent         = Notes;
+      })
+      .catch(err => {
+        console.error("Load failed", err);
+        document.getElementById("card").innerHTML =
+          "<div style='font:16px/1.4 Ambit, Arial, sans-serif'>Could not load data. Please check the Sheet ID, tab name (restaurant), or network connection.</div>";
+      });
+  </script>
+</body>
+</html>
