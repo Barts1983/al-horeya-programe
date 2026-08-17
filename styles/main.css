@@ -56,11 +56,11 @@ body {
 
 .table-container {
     width: 100%;
-    height: calc(100vh - 200px); /* header + footer + breathing space */
+    height: calc(100vh - 200px);
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    padding: 20px 0;
+    padding: 20px 20px;
     overflow: hidden;
 }
 
@@ -69,22 +69,19 @@ table {
     width: 95%;
     table-layout: fixed;
     border-collapse: collapse;
-    border: 3px solid #092a5e;
+    border: none;
     font-size: 22px;
     background: white;
-    border-radius: 14px;
+    border-radius: 18px;
     overflow: hidden;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.08);
-
-    /* NEW – critical for footer protection */
-    max-height: 100%;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
 }
+``
 
 /* Table cells */
 th, td {
-    padding: 12px;
-    font-family: 'Ambit', Arial, sans-serif;
-    border-bottom: 2px solid #092a5e;
+    padding: 10px 16px;
+    border-bottom: 1px solid #D6DFEA;
     text-align: left;
 }
 
@@ -99,15 +96,18 @@ thead th {
     font-family: 'Ambit', Arial, sans-serif;
     font-size: 24px;
     font-weight: 600;
-    border-bottom: 3px solid #092a5e;
 }
 
 
 /* Alternate row shading */
-tr:nth-child(even) {
-    background: rgba(241, 250, 254, 1);
+tbody tr:nth-child(even) {
+    background: #F8FAFC;
 }
-
+th:last-child,
+td:last-child {
+    width: 80px;
+    text-align: center;
+}
 footer {
     position: fixed;
     bottom: 0;
