@@ -53,39 +53,7 @@ body {
     max-width: 180px;
     object-fit: contain;
 }
-/* Main content area */
-.content-area {
-    display: flex;
-    gap: 20px;
-    padding: 20px;
-    height: calc(100vh - 180px);
-    box-sizing: border-box;
-}
 
-/* Hero image panel */
-.hero-panel {
-    width: 25%;
-    flex-shrink: 0;
-}
-
-.hero-panel img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    border-radius: 18px;
-    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
-}
-
-/* Programme table area */
-.table-container {
-    width: 75%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: flex-start;
-    overflow: hidden;
-    padding: 0;
-}
 .table-container {
     width: 100%;
     height: calc(100vh - 200px);

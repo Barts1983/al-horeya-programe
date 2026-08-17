@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Monday</title>
+
+<link rel=".css
+</head>
+
+<body>
+
+<header class="top-header">
+    <div class="header-left">
+        <h2>Monday's Daily Schedule</h2>
+    </div>
+    <div class="header-right">
+        <img src="logo.png" alt="Company Logo">
+    </div>
+</header>
+
+<div class="content-area">
+
+    <div class="hero-panel">
+        aria.jpg" alt="TUI Aria">
+    </div>
+
+    <div class="table-container">
+        <table id="programme">
+            <thead>
+                <tr>
+                    <th>Time</th>
+                    <th>Event</th>
+                    <th>Deck</th>
+                </tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
+
+</div>
+
+<footer>
+    *Please note that pick up times for shore excursions are approximate - please see your Cruise Director for confirmed times
+</footer>
+
+<script>
+const SHEET_ID = "10DCX_3LZlqSITNfTVNuvxvRBu_m0s5aPiYVQy_LkSiA";
+const TAB_NAME = encodeURIComponent("monday");
+
+fetch(`https://opensheet.elk.sh/${SHEET_ID}/${TAB_NAME}`)
+  .then(res => res.json())
+  .then(data => {
+    const tbody = document.querySelector("#programme tbody");
+    tbody.innerHTML = "";
+
+    data.forEach(row => {
+      const tr = document.createElement("tr");
+      tr.innerHTML = `
+        <td>${row.Time || ""}</td>
+        <td>${row.Event || ""}<br><small>${row.Notes || ""}</small></td>
+        <td>${row.Location || ""}</td>
+      `;
+      tbody.appendChild(tr);
+    });
+
+    const table = document.querySelector("table");
+    const container = document.querySelector(".table-container");
+
+    let fontSize = 22;
+    let padding = 12;
+
+    table.style.fontSize = fontSize + "px";
+
+    document.querySelectorAll("th, td").forEach(c =>
+      c.style.padding = padding + "px"
+    );
+
+    while (table.offsetHeight > container.clientHeight && fontSize > 14) {
+      fontSize -= 1;
+      padding -= 1;
+
+      table.style.fontSize = fontSize + "px";
+
+      document.querySelectorAll("th, td").forEach(c =>
+        c.style.padding = padding + "px"
+      );
+    }
+  })
+  .catch(err => {
+    console.error("Programme load failed", err);
+  });
+</script>
+
+</body>
+</html>
