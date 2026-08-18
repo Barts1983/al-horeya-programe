@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+
+  <title>Evening Entertainment</title>
+
+  <!-- Your brand stylesheet -->
+ 
+
+  <style>
+    body {
+      margin: 0;
+      min-height: 100vh;
+      font-family: 'Ambit', Arial, sans-serif;
+      overflow: hidden;
+    }
+
+    /* Full-screen background image */
+    .bg-full {
+      position: fixed;
+      inset: 0;
+      background: #000 url("img/Entertainment.jpg") center center / cover no-repeat;
+      z-index: -2;
+    }
+
+    /* Dark overlay to help the card stand out */
+    .bg-full::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: rgba(0, 0, 0, 0.28);
+      z-index: -1;
+    }
+
+    /* Logo top left */
+    .onboard-logo-box {
+      position: relative;
+      z-index: 2;
+      padding: 24px;
+    }
+
+    .onboard-logo {
+      width: 160px;
+      height: auto;
+      object-fit: contain;
+      display: block;
+    }
+
+    /* Main page layout */
+    .page-wrap {
+      min-height: calc(100vh - 140px);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px 40px 60px;
+      box-sizing: border-box;
+    }
+
+    /* Dark blue information box */
+    .entertainment-card {
+      width: min(1050px, 90vw);
+      border-radius: 24px;
+      background: rgba(9, 42, 94, 0.90);
+      color: #ffffff;
+      box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
+      padding: 70px 70px;
+      text-align: center;
+      box-sizing: border-box;
+      backdrop-filter: blur(4px);
+    }
+
+    .eyebrow {
+      font-size: clamp(28px, 4vw, 56px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      margin: 0 0 34px;
+      line-height: 1.05;
+    }
+
+    .event-name {
+      font-size: clamp(58px, 7vw, 104px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.04em;
+      margin: 0 0 36px;
+      line-height: 1.05;
+      color: #ffffff;
+    }
+
+    .event-time {
+      font-size: clamp(44px, 5.5vw, 76px);
+      font-weight: 700;
+      margin: 0 0 28px;
+      line-height: 1.1;
+      color: #70CBF4;
+    }
+
+    .event-venue {
+      font-size: clamp(28px, 3.5vw, 46px);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      margin: 0;
+      line-height: 1.1;
+    }
+
+    .loading-message {
+      font-size: 30px;
+      font-weight: 600;
+      line-height: 1.3;
+    }
+
+    @media (max-width: 768px) {
+      .onboard-logo {
+        width: 130px;
+      }
+
+      .page-wrap {
+        padding: 20px;
+      }
+
+      .entertainment-card {
+        padding: 46px 30px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <div class="bg-full" aria-hidden="true"></div>
+
+  <div class="onboard-logo-box">
+    <img src="logo.png" alt="TUI River Cruises Logo" class="onboard-logo">
+  </div>
+
+  <main class="page-wrap">
+    <section class="entertainment-card" id="card">
+      <h1 class="eyebrow">Tonight's Entertainment</h1>
+
+      <div class="event-name" id="eventName">
+        Entertainment
+      </div>
+
+      <div class="event-time" id="eventTime">
+        20:30
+      </div>
+
+      <div class="event-venue">
+        Observatory
+      </div>
+    </section>
+  </main>
+
+  <script>
+    const SHEET_ID = "10DCX_3LZlqSITNfTVNuvxvRBu_m0s5aPiYVQy_LkSiA";
+    const TAB_NAME = "entertainment";
+
+    const today = new Date().toLocaleDateString("en-GB", {
+      weekday: "long"
+    });
+
+    const url = `https://opensheet.elk.sh/${encodeURIComponent(SHEET_ID)}/${encodeURIComponent(TAB_NAME)}`;
+
+    fetch(url)
+      .then(response => response.json())
+      .then(rows => {
+        const event = rows.find(row =>
+          row.Day &&
+          row.Day.trim().toLowerCase() === today.toLowerCase()
+        );
+
+        if (!event) {
+          document.getElementById("eventName").textContent = "Entertainment TBC";
+          document.getElementById("eventTime").textContent = "";
+          return;
+        }
+
+        document.getElementById("eventName").textContent =
+          event.Event || "Entertainment TBC";
+
+        document.getElementById("eventTime").textContent =
+          event.Time || "";
+      })
+      .catch(error => {
+        console.error("Entertainment load failed", error);
+
+        document.getElementById("card").innerHTML = `
+          <div class="loading-message">
+            Evening entertainment details are currently unavailable.
+          </div>
+        `;
+      });
+  </script>
+
+</body>
+</html>
