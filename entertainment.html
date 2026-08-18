@@ -192,7 +192,11 @@
 
         document.getElementById("eventName").textContent =
           event.Entertainment || "Entertainment TBC";
+        
+        document.getElementById("eventSubtitle").textContent =
+          event.Subtitle || "";
 
+      
         document.getElementById("eventTime").textContent =
           event.Time || "";
       })
