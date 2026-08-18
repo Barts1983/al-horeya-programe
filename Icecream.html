@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>Ice Cream Social</title>
+
+
+<style>
+body{
+    margin:0;
+    min-height:100vh;
+    font-family:'Ambit', Arial, sans-serif;
+}
+
+.bg-full{
+    position:fixed;
+    inset:0;
+    background:url("img/Icecream.jpg") center center/cover no-repeat;
+    z-index:-2;
+}
+
+.bg-full::after{
+    content:"";
+    position:absolute;
+    inset:0;
+    background:rgba(0,0,0,0.25);
+}
+
+.onboard-logo-box{
+    padding:24px;
+}
+
+.onboard-logo{
+    width:160px;
+    height:auto;
+}
+
+.page-wrap{
+    display:flex;
+    justify-content:center;
+    padding:40px 20px;
+}
+
+.sky-card{
+    width:min(900px,90vw);
+    background:rgba(112,203,244,0.92);
+    border-radius:20px;
+    padding:60px,50px;
+    color:#092a5e;
+    text-align:center;
+    box-shadow:0 10px 30px rgba(0,0,0,.25);
+}
+
+.title{
+    font-size:60px;
+    font-weight:700;
+    margin-bottom:30px;
+}
+
+.invite-text{
+    font-size:30px;
+    line-height:1.4;
+    margin-bottom:40px;
+}
+
+.day{
+    font-size:70px;
+    font-weight:700;
+    text-transform:uppercase;
+    margin-bottom:25px;
+}
+
+.time{
+    font-size:48px;
+    font-weight:700;
+}
+
+@media (max-width:768px){
+
+    .title{
+        font-size:42px;
+    }
+
+    .invite-text{
+        font-size:22px;
+    }
+
+    .day{
+        font-size:48px;
+    }
+
+    .time{
+        font-size:32px;
+    }
+}
+</style>
+</head>
+
+<body>
+
+<div class="bg-full"></div>
+
+<div class="onboard-logo-box">
+    <img src="logo.png" alt="Logo" class="onboard-logo">
+</div>
+
+<div class="page-wrap">
+
+    <section class="sky-card">
+
+        <h1 class="title">Ice cream social</h1>
+
+        <div class="invite-text">
+            Join us for an Ice Cream Social this week on
+        </div>
+
+        <div class="day" id="eventDay">
+            Wednesday
+        </div>
+
+        <div class="time" id="eventTime">
+            15:00 - 16:30
+        </div>
+
+    </section>
+
+</div>
+
+<script>
+
+const SHEET_ID = "10DCX_3LZlqSITNfTVNuvxvRBu_m0s5aPiYVQy_LkSiA";
+const EVENT_NAME = "Afternoon Tea";
+
+fetch(`https://opensheet.elk.sh/${SHEET_ID}/events`)
+    .then(res => res.json())
+    .then(rows => {
+
+        const event = rows.find(
+            row => row.Event &&
+            row.Event.toLowerCase() === EVENT_NAME.toLowerCase()
+        );
+
+        if(!event) return;
+
+        document.getElementById("eventDay").textContent =
+            event.Day || "";
+
+        document.getElementById("eventTime").textContent =
+            event.Time || "";
+    })
+    .catch(err => console.error(err));
+
+</script>
+
+</body>
+</html>
