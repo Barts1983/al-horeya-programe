@@ -65,7 +65,7 @@
       background: rgba(9, 42, 94, 0.90);
       color: #ffffff;
       box-shadow: 0 14px 36px rgba(0, 0, 0, 0.35);
-      padding: 70px 70px;
+      padding: 50px 60px;
       text-align: center;
       box-sizing: border-box;
       backdrop-filter: blur(4px);
@@ -79,9 +79,17 @@
       margin: 0 0 34px;
       line-height: 1.05;
     }
-
+    
+    .subtitle{
+    font-size:24px;
+    font-weight:600;
+    text-transform:uppercase;
+    letter-spacing:0.08em;
+    color:#70CBF4;
+    margin-bottom:20px;
+}
     .event-name {
-      font-size: clamp(58px, 7vw, 104px);
+      font-size: clamp(50px, 7vw, 90px);
       font-weight: 700;
       text-transform: uppercase;
       letter-spacing: 0.04em;
@@ -140,6 +148,9 @@
   <main class="page-wrap">
     <section class="entertainment-card" id="card">
       <h1 class="eyebrow">Tonight's Entertainment</h1>
+
+      <div class="subtitle" id="eventSubtitle"> Guest Perfomers
+       </div>
 
       <div class="event-name" id="eventName">
         Entertainment
