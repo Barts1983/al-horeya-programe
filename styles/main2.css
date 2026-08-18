@@ -1,0 +1,224 @@
+
+/* Ambit font setup */
+@font-face {
+    font-family: 'Ambit';
+    src: url('fonts/Ambit-Regular.woff') format('woff');
+    font-weight: 400;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ambit';
+    src: url('fonts/Ambit-Bold.woff') format('woff');
+    font-weight: 600;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'Ambit';
+    src: url('fonts/Ambit-Bold.woff') format('woff');
+    font-weight: 700;
+    font-style: normal;
+}
+
+body {
+    font-family: 'Ambit', Arial, sans-serif;
+    background: white;
+    color: #092a5e;
+    margin: 0;
+    padding: 0;
+}
+
+/* Top Header */
+.top-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px 30px;
+    background: #092a5e;
+    color: white;
+}
+
+/* Header title */
+.top-header h2 {
+    margin: 0;
+    font-size: 34px;
+    font-family: 'Ambit', Arial, sans-serif;
+    font-weight: 600;
+}
+
+/* Logo */
+.header-right img {
+    height: 50px;
+    max-width: 180px;
+    object-fit: contain;
+}
+/* Main content area */
+
+.programme-card {
+    display: flex;
+    gap: 20px;
+    padding: 20px;
+    align-items: flex-start;
+}
+
+.hero-panel {
+    width: 28%;
+    flex-shrink: 0;
+}
+
+.hero-panel img {
+    width: 100%;
+    display: block;
+    border-radius: 18px;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+    object-fit: cover;
+    object-position: center;
+}
+
+.table-container {
+    flex: 1;
+    padding: 0;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    border: none;
+    font-size: 22px;
+    background: white;
+    border-radius: 18px;
+    overflow: hidden;
+    box-shadow: 0 12px 30px rgba(0,0,0,0.08);
+}
+
+
+/* Table cells */
+th, td {
+    padding: 10px 16px;
+    border-bottom: 1px solid #D6DFEA;
+    text-align: left;
+}
+
+/* Table header row */
+thead tr {
+    background: #092a5e;
+}
+
+/* Table header text */
+thead th {
+    color: white;
+    font-family: 'Ambit', Arial, sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+}
+
+th:first-child,
+td:first-child {
+    width: 90px;
+    font-weight: 700;
+    color: #092a5e;
+}
+
+
+
+/* Alternate row shading */
+tbody tr:nth-child(even) {
+    background: #F8FAFC;
+}
+
+th:last-child,
+td:last-child {
+    width: 70px;
+    text-align: center;
+}
+footer {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    background: #092a5e;
+    color: white;
+    font-family: 'Ambit', Arial, sans-serif; 
+    border-top: none;
+    padding: 14px;
+    font-size: 20px;
+    text-align: center;
+}
+
+/* Auto-shrink text to fit height if needed */
+@media screen and (max-height: 1080px) {
+    table {
+        font-size: 20px;
+    }
+}
+
+/* ===== HOME PAGE HEADER ===== */
+
+.main-header {
+    background: #092a5e;
+    color: white;
+    padding: 20px 30px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.main-header h2 {
+    margin: 0;
+    font-size: 34px;
+}
+
+.main-header img {
+    height: 60px;
+}
+
+/* ===== HOME PAGE TILES ===== */
+
+.tiles-container {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 30px;
+    padding: 40px;
+}
+
+
+.day-tile {
+    background: #092a5e;
+    color: white;
+    text-decoration: none;
+    font-size: 34px;
+    font-weight: 600;
+    border-radius: 18px;
+    padding: 40px 20px;
+    text-align: center;
+    box-shadow: 0 10px 24px rgba(0,0,0,0.18);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+    /* NEW */
+    height: 160px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+.day-tile span {
+    display: block;
+    font-size: 22px;
+    font-weight: normal;
+    margin-top: 8px;
+    opacity: 0.9;
+}
+
+.day-tile:hover {
+    transform: scale(1.04);
+    box-shadow: 0 14px 30px rgba(0,0,0,0.25);
+}
+
+/* ===== HOME PAGE FOOTER ===== */
+
+.main-footer {
+    background: #092a5e;
+    color: white;
+    text-align: center;
+    padding: 14px;
+    font-size: 18px;
+}
