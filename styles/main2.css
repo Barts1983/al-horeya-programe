@@ -63,17 +63,17 @@ body {
 }
 
 .hero-panel {
-    width: 28%;
+    width: 24%;
     flex-shrink: 0;
 }
 
 .hero-panel img {
     width: 100%;
     display: block;
-    border-radius: 18px;
     box-shadow: 0 12px 30px rgba(0,0,0,0.08);
     object-fit: cover;
-    object-position: center;
+    object-position: 70% center;
+
 }
 
 .table-container {
