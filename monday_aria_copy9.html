@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <title>Monday</title>
 
-<link rel="stylesheet" href="styles/main2.css">
+<link rel="stylesheet" href="styles/main.css">
 </head>
 
 <body>
@@ -13,16 +13,13 @@
     <div class="header-left">
         <h2>Monday's Daily Schedule</h2>
     </div>
+
     <div class="header-right">
-        <img src="logo.png" alt="Company Logo">
+        <img src="logo.pngo">
     </div>
 </header>
 
 <div class="programme-card">
-
-    <div class="hero-panel">
-        <img src="img/Aria1.jpg" alt="Aria">
-    </div>
 
     <div class="table-container">
         <table id="programme">
@@ -50,17 +47,25 @@ const TAB_NAME = encodeURIComponent("monday");
 fetch(`https://opensheet.elk.sh/${SHEET_ID}/${TAB_NAME}`)
   .then(res => res.json())
   .then(data => {
+
     const tbody = document.querySelector("#programme tbody");
     tbody.innerHTML = "";
 
     data.forEach(row => {
+
       const tr = document.createElement("tr");
+
       tr.innerHTML = `
         <td>${row.Time || ""}</td>
-        <td>${row.Event || ""}<br><small>${row.Notes || ""}</small></td>
+        <td>
+            ${row.Event || ""}
+            ${row.Notes ? `<br><small>${row.Notes}</small>` : ""}
+        </td>
         <td>${row.Location || ""}</td>
       `;
+
       tbody.appendChild(tr);
+
     });
 
     const table = document.querySelector("table");
@@ -71,20 +76,23 @@ fetch(`https://opensheet.elk.sh/${SHEET_ID}/${TAB_NAME}`)
 
     table.style.fontSize = fontSize + "px";
 
-    document.querySelectorAll("th, td").forEach(c =>
-      c.style.padding = padding + "px"
-    );
+    document.querySelectorAll("th, td").forEach(c => {
+        c.style.padding = padding + "px";
+    });
 
     while (table.offsetHeight > container.clientHeight && fontSize > 14) {
+
       fontSize -= 1;
       padding -= 1;
 
       table.style.fontSize = fontSize + "px";
 
-      document.querySelectorAll("th, td").forEach(c =>
-        c.style.padding = padding + "px"
-      );
+      document.querySelectorAll("th, td").forEach(c => {
+          c.style.padding = padding + "px";
+      });
+
     }
+
   })
   .catch(err => {
     console.error("Programme load failed", err);
